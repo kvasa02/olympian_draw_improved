@@ -1,0 +1,20 @@
+POSTMORTEM
+The Process: From Rocky Refactoring to a Smooth Flow
+Looking back, the development process for this project was a journey of iterative refinement. It started out rocky, as my main.lua file quickly became a heavy script that was hard to navigate. The turning point was receiving feedback to split the code into logical modules (utils.lua, cards.lua, audio.lua, etc.). This refactoring was crucial as it not only made the code more maintainable but also clarified the overall structure, making subsequent feature additions much smoother.
+
+Comparison to Previous Projects
+This project stands out from my previous work due to its deliberate and disciplined application of a wide range of programming patterns. In the past, my approach was often to just "get it done," but for Olympian Draw, I focused on building a solid foundation. Implementing patterns like Prototype and Component from the start, and later adding performance optimizations like the Object Pool, felt more professional and resulted in a much more robust final product than any of my previous passion projects or academic work.
+
+Biggest Triumph
+The thing I'm most proud of is how the different patterns came together to create a clean, extensible, and fast and smooth core. The Prototype system makes adding new cards straightforward, and the visual flair from the new particle effects and card physics feels snappy and responsive because the Object Pool pattern prevent the game from doing unnecessary work. It feels like a major success that the game is not just functional but also efficient, proving that the structure works as intended.
+
+Biggest Annoyance and Area for Improvement
+Now that the major performance issues have been addressed, the biggest remaining annoyance is the manual handling of card effects. Currently, onReveal and onPlay effects are triggered directly within the game's state logic, which works but feels brittle and doesn't scale elegantly. If I were to continue, my top priority would be to refactor this using an Observer Pattern. This would allow cards to "listen" for game events and react accordingly, decoupling them from the main game loop and making complex interactions much easier and safer to manage.
+
+Would I Do It Again?
+Absolutely. Working on a project with a clear structural vision was incredibly rewarding. It reinforced the value of planning and demonstrated how good patterns don't just solve technical problems but they also make the development process more creative and less frustrating. I feel like I have a solid foundation that I could easily expand with new cards, visual effects, and even a proper multiplayer mode.
+
+Final Insights and Funny Bugs
+One key takeaway was the power of external feedback. The suggestions I received directly led to a more readable and maintainable codebase. It’s a powerful reminder that getting fresh eyes on your work is one of the fastest ways to spot its flaws.
+
+As for bugs, I had a funny moment where I was testing the Cyclops card, whose effect is to destroy other allied cards at its location. I had a bug in the loop that caused the Cyclops to destroy itself, leading to a cascade of errors. It was a classic off-by-one bug that served as a good lesson in carefully iterating through tables that are being modified at the same time.
