@@ -51,9 +51,9 @@ function love.load()
     cardDimensions = {
         width           = 150,
         height          = 150,
-        locationSpacing = 250, -- Spacing between the *centers* of locations
-        cardSlotSpacing = 30, -- This was causing the overlap, now renamed and used differently
-        slotHorizontalSpacing = 35 -- NEW: Horizontal spacing between card slots within a location
+        locationSpacing = 250, 
+        cardSlotSpacing = 30, 
+        slotHorizontalSpacing = 35 
     }
 
     -- ─────────────────────────────────────────────────────────────────────
@@ -66,11 +66,6 @@ function love.load()
 
         playerLocationsY   = screenHeight - 350,
         opponentLocationsY = 150,
-        -- Calculate locationsStartX so the three locations are centered horizontally
-        -- 3 locations * (card width + some padding for slots)
-        -- Let's re-evaluate locationsStartX to better center the *group* of slots.
-        -- Total width of all slots in one location = slotsPerLocation * (cardDimensions.width + some padding)
-        -- Let's adjust locationsStartX in utils.lua, as it depends on cardDimensions.slotHorizontalSpacing
         locationsStartX    = screenWidth/2 - cardDimensions.locationSpacing * 1.2,
 
 
@@ -220,13 +215,11 @@ function love.load()
       boardChanged = true
     }
     
-    -- Location Effects Definition (Updated for clarity and consistency)
+   
     locationEffects = {
         [1] = {
             name = "Mount Olympus",
             effect = "Cards here gain +1 Power.",
-            -- The 'apply' function is directly used by utils.calculateLocationPower.
-            -- It does not permanently modify card.power, but calculates it for display.
         },
         [2] = {
             name = "Underworld",
@@ -236,7 +229,6 @@ function love.load()
             name = "River Styx",
             effect = "When played here, draw a card.",
             onPlay = function(owner)
-                -- This effect triggers on card play at this location
                 if owner == "player" then
                     drawOneCard(player)
                 else
@@ -257,9 +249,9 @@ function createCardCopy(template)
     local card = {}
     for k, v in pairs(template) do
         if type(v) == "function" then
-            card[k] = v  -- Functions can be shared
+            card[k] = v  
         elseif type(v) == "table" then
-            -- Deep copy tables to avoid shared references
+        
             card[k] = {}
             for tk, tv in pairs(v) do
                 card[k][tk] = tv
@@ -270,15 +262,11 @@ function createCardCopy(template)
     end
     card.id = math.random(1000000)
     card.flipped = false
-    card.basePower = template.power  -- Store original power
+    card.basePower = template.power  
     return card
 end
 
 function resetCardPowers()
-    -- This function ensures that any temporary power modifications applied
-    -- directly to 'card.power' by 'onReveal' effects are reset to basePower
-    -- before the next turn's calculations. Location effects are calculated
-    -- dynamically by utils.calculateLocationPower.
     for li = 1, gameSettings.locationsCount do
         for _, c in ipairs(player.locations[li]) do
             if c.basePower then
@@ -453,7 +441,7 @@ end
 function dealStartingHands()
     player.hand   = {}
     opponent.hand = {}
-    for i = 1, gameSettings.startingHandSize do -- Will deal 3 cards
+    for i = 1, gameSettings.startingHandSize do 
         if #player.deck > 0 then
             table.insert(player.hand, table.remove(player.deck, 1))
         end
@@ -468,7 +456,6 @@ end
 --  LOVE.UPDATE
 -- ─────────────────────────────────────────────────────────────────────────
 function love.update(dt)
-    -- Update active particles
     for i = #activeParticles, 1, -1 do
         local p = activeParticles[i]
         p.lifespan = p.lifespan - dt
@@ -477,12 +464,11 @@ function love.update(dt)
         else
             p.x = p.x + p.vx * dt
             p.y = p.y + p.vy * dt
-            p.vy = p.vy + particleGravity * dt -- Apply gravity
+            p.vy = p.vy + particleGravity * dt 
         end
     end
 
     if gameState == "title" then
-        -- Animate title glow & particles
         titleGlow     = titleGlow + dt * 2
         particleTimer = particleTimer + dt
         for _, p in ipairs(particles) do
@@ -630,7 +616,6 @@ function love.mousepressed(x, y, button)
                 return
             end
 
-            -- Otherwise, pick up from left‐stacked hand
             local startX = boardLayout.handX
             local startY = boardLayout.handStartY
             for i, c in ipairs(player.hand) do
@@ -641,8 +626,8 @@ function love.mousepressed(x, y, button)
                         draggedCard = {
                             card = c,
                             handIndex = i,
-                            rotation = 0, -- Initial rotation
-                            targetRotation = 0 -- Target rotation for physics
+                            rotation = 0, 
+                            targetRotation = 0 
                         }
                         dragOffset.x = x - cardX
                         dragOffset.y = y - cardY

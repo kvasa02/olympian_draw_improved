@@ -224,8 +224,8 @@ function utils.drawLocationInfo(index, x)
     local info = locationEffects[index]
     if not info then return end
 
-    local yTop = boardLayout.opponentLocationsY - 40 -- Adjust Y to be above AI cards
-    local yBot = boardLayout.playerLocationsY + cardDimensions.height + 10 -- Adjust Y to be below player cards
+    local yTop = boardLayout.opponentLocationsY - 40 
+    local yBot = boardLayout.playerLocationsY + cardDimensions.height + 10 
 
     love.graphics.setFont(subtitleFont)
     love.graphics.setColor(colors.lightGold)
